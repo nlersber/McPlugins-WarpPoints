@@ -38,11 +38,6 @@ public class JoinListener implements Listener {
      */
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
-        if (p.hasPlayedBefore()) {
-            DataManager.loadData(p.getUniqueId());
-            return;
-        }
-        DataManager.addPlayerAndFile(p.getUniqueId(), new PlayerWarpPointData());
+        DataManager.loadData(e.getPlayer().getUniqueId());
     }
 }
