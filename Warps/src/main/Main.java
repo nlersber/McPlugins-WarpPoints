@@ -41,8 +41,6 @@ public class Main extends JavaPlugin {
         players.addAll(this.getServer().getOnlinePlayers());
 
         manager = new DataManager();
-        System.out.println(players);
-        System.out.println(players.isEmpty());
 
         Stream<UUID> temp = players.stream().map(s -> s.getUniqueId());
         manager.fillUpFromFiles(temp == null ? new ArrayList<>() : temp.filter(s -> s != null)
@@ -57,7 +55,6 @@ public class Main extends JavaPlugin {
         this.getCommand("warp").setExecutor(new WarpExecutor(this));
 
     }
-    
-    //TODO: test 
 
+    //TODO: test 
 }
