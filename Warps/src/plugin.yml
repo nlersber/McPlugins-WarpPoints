@@ -1,0 +1,24 @@
+name: WarpPoints
+author: Nick Lersberghe - Lazoh - MyNameIsLego
+version: 1.0
+main: main.Main
+description: Plugin that allows a player to save a couple of warp points to teleport to at will
+commands:
+    setwarp:
+        usage: /<command> [warp name]
+        description: Sets a warp point
+    rmwarp:
+        usage: /<command> [warp name]
+        description: Removes a warp point
+    chwarp:
+        usage: /<command> [current warp name] [new warp name]
+        description: Changes the name of a set warp
+    warps:
+        usage: /<command>
+        description: Gives a list of all the warps you have set
+    warp:
+        usage: /<command> [warp name]
+        description: Teleports you to the specified warp
+        
+    
+
