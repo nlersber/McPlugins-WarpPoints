@@ -25,6 +25,16 @@ public class PlayerWarpPointData implements Serializable {
     public PlayerWarpPointData() {
     }
 
+    /**
+     * Test Injection
+     *
+     * @param serialized
+     * @param overloading_sucks
+     */
+    public PlayerWarpPointData(Map<String, Location> serialized, boolean overloading_sucks) {
+        this.warps = serialized;
+    }
+
     public PlayerWarpPointData(Map<String, Map<String, Object>> serialized) {
         serialized.forEach((key, val) -> warps.put(key, Location.deserialize(val)));
     }
@@ -34,7 +44,6 @@ public class PlayerWarpPointData implements Serializable {
         warps.forEach((key, val) -> temp.put(key, val.serialize()));
         return temp;
     }
-    
 
     /**
      * Takes in the name of a possible Location and returns that locations if
