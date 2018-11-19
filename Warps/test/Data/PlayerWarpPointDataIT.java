@@ -98,5 +98,4 @@ public class PlayerWarpPointDataIT {
         data.changeName("test", "test2");
         assertTrue(data.getLocationByName("test2") != null);
     }
-
 }
