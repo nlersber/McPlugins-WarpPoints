@@ -28,12 +28,14 @@ import org.bukkit.Location;
  * @author Nick
  */
 public class DataManager {
-    
+
     private static Map<UUID, PlayerWarpPointData> points = new HashMap<>();
     private static Main plugin;
-    
+    private static File dataFolder;
+
     public DataManager(Main main) {
         plugin = main;
+        dataFolder = plugin.getDataFolder();
     }
 
     /**
@@ -46,7 +48,6 @@ public class DataManager {
      * @param players List of the UUID's by all players
      */
     public void fillUpFromFiles(List<UUID> players) {
-        String filename = "";
         File[] files = plugin.getDataFolder().listFiles();
         System.out.println(Arrays.toString(files));
         if (files != null)
@@ -54,10 +55,10 @@ public class DataManager {
                 UUID temp = UUID.fromString(s.getName().substring(0, s.getName().lastIndexOf(".")));//Contains the player's UUID
                 if (players.contains(temp)) {//Checks if the UUID corresponds with a player
                     try (ObjectInputStream i = new ObjectInputStream(new FileInputStream(s))) {
-                        
+
                         Map<String, Map<String, Object>> tempMap = (Map<String, Map<String, Object>>) i.readObject();//Reads the Map used to serialize the object
                         PlayerWarpPointData data = null;
-                        
+
                         if (tempMap != null)
                             data = new PlayerWarpPointData(tempMap);//Makes a PWPD with the Map
 
@@ -75,6 +76,7 @@ public class DataManager {
             if (!keys.contains(s))
                 createFileAndDataWrapper(s);//Gives them a data wrapper and file if they don't
         });
+
     }
 
     /**
@@ -90,7 +92,7 @@ public class DataManager {
             Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static void addPlayerAndFile(UUID id, PlayerWarpPointData data) {
         points.putIfAbsent(id, new PlayerWarpPointData());//putIfAbsent to allow the method to be used when a player hasn't gotten a file yet but needs an entry
         writeToFile(id, data);
@@ -186,11 +188,11 @@ public class DataManager {
             throw new IllegalArgumentException("You have no warps");
         return names;
     }
-    
+
     public static Location getWarpLocation(UUID id, String name) {
         return points.get(id).getLocationByName(name);
     }
-    
+
     public static void loadData(UUID id) {
         File file = new File(id.toString() + ".txt");
         if (file.exists())
