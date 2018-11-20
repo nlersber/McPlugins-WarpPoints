@@ -32,14 +32,13 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        new JoinListener(this);
         /*
         Gets the list of all players on the server.
          */
         File dataFolder = getDataFolder();
         if (!dataFolder.exists())
             dataFolder.mkdir();
-        
+
         List<Player> players = new ArrayList<>();//Get list of all online players
 
         players.addAll(this.getServer().getOnlinePlayers());
@@ -49,6 +48,8 @@ public class Main extends JavaPlugin {
         Stream<UUID> temp = players.stream().map(s -> s.getUniqueId());
         manager.fillUpFromFiles(temp == null ? new ArrayList<>() : temp.filter(s -> s != null)
                 .collect(Collectors.toList()));
+
+        new JoinListener(this);
 
         this.getCommand("setwarp").setExecutor(new SetWarpExecutor(this));
         this.getCommand("rmwarp").setExecutor(new RmWarpExecutor(this));

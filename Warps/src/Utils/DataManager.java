@@ -56,7 +56,7 @@ public class DataManager {
 
         if (files != null)//To prevent a NullPointer
             Arrays.stream(files).forEach(s -> {
-                UUID temp = UUID.fromString(FilenameUtils.getBaseName(s.getName()));//Contains the player's UUID, removes the extension
+                UUID temp = UUID.fromString(s.getName());//Contains the player's UUID, removes the extension
                 if (players.contains(temp)) {//Checks if the UUID corresponds with a player
                     try (ObjectInputStream i = new ObjectInputStream(new FileInputStream(s))) {
 
@@ -204,8 +204,10 @@ public class DataManager {
         File[] files = dataFolder.listFiles((File dir, String name) -> {
             return (name.startsWith(id.toString()) && FilenameUtils.getBaseName(name).endsWith(id.toString()));
         });
-        File file = files[0];
-        if (file.exists())
+        File file = null;
+        if (files != null || files.length == 0)
+            file = files[0];
+        if (file != null)
             try (ObjectInputStream i = new ObjectInputStream(new FileInputStream(file))) {//Maakt een InputStream aan voor het object
                 Map<String, Map<String, Object>> tempMap = (Map<String, Map<String, Object>>) i.readObject();//Leest het object
                 PlayerWarpPointData data = null;
@@ -215,7 +217,6 @@ public class DataManager {
                     points.put(id, data);
             } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ex.getMessage());
             }
         points.putIfAbsent(id, new PlayerWarpPointData());
     }
