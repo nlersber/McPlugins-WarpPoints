@@ -39,6 +39,7 @@ public class Main extends JavaPlugin {
         File dataFolder = getDataFolder();
         if (!dataFolder.exists())
             dataFolder.mkdir();
+        
         List<Player> players = new ArrayList<>();//Get list of all online players
 
         players.addAll(this.getServer().getOnlinePlayers());
