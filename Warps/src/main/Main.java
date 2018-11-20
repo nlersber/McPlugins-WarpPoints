@@ -32,7 +32,6 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
 
-
         /*
         Gets the list of all players on the server.
          */

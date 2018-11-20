@@ -9,6 +9,9 @@ import Data.PlayerWarpPointData;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,6 +24,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.Main;
+import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Location;
 
 /**
@@ -28,12 +32,14 @@ import org.bukkit.Location;
  * @author Nick
  */
 public class DataManager {
-    
+
     private static Map<UUID, PlayerWarpPointData> points = new HashMap<>();
     private static Main plugin;
-    
+    private static File dataFolder;
+
     public DataManager(Main main) {
         plugin = main;
+        dataFolder = plugin.getDataFolder();
     }
 
     /**
@@ -47,17 +53,17 @@ public class DataManager {
      */
     public void fillUpFromFiles(List<UUID> players) {
         String filename = "";
-        File[] files = plugin.getDataFolder().listFiles();
+        File[] files = dataFolder.listFiles();
         System.out.println(Arrays.toString(files));
-        if (files != null)
+        if (files != null)//To prevent a NullPointer
             Arrays.stream(files).forEach(s -> {
-                UUID temp = UUID.fromString(s.getName().substring(0, s.getName().lastIndexOf(".")));//Contains the player's UUID
+                UUID temp = UUID.fromString(FilenameUtils.getBaseName(s.getName()));//Contains the player's UUID, removes the extension
                 if (players.contains(temp)) {//Checks if the UUID corresponds with a player
                     try (ObjectInputStream i = new ObjectInputStream(new FileInputStream(s))) {
-                        
+
                         Map<String, Map<String, Object>> tempMap = (Map<String, Map<String, Object>>) i.readObject();//Reads the Map used to serialize the object
                         PlayerWarpPointData data = null;
-                        
+
                         if (tempMap != null)
                             data = new PlayerWarpPointData(tempMap);//Makes a PWPD with the Map
 
@@ -83,14 +89,14 @@ public class DataManager {
      * @param id UUID of a player without file and PlayerWarpPointData
      */
     private void createFileAndDataWrapper(UUID id) {
-        points.putIfAbsent(id, new PlayerWarpPointData());//IfAbsent is redundant, just to be sure
-        try (ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(id.toString()))) {//Makes an outputstream
-            o.writeObject(new PlayerWarpPointData().serialize());//Makes a file with an empty wrapper
+        points.putIfAbsent(id, new PlayerWarpPointData());//IfAbsent is redundant, extra check
+        try (ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(new File(dataFolder, id.toString()), false))) {//Makes an outputstream, places it in the datafolder in a file named after the UUID of the player. False added to avoid appending and instead overwriting the file should there be one after all
+            o.writeObject(new PlayerWarpPointData().serialize());//Makes a file with an empty wrapper, just to have a file available
         } catch (IOException ex) {
             Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static void addPlayerAndFile(UUID id, PlayerWarpPointData data) {
         points.putIfAbsent(id, new PlayerWarpPointData());//putIfAbsent to allow the method to be used when a player hasn't gotten a file yet but needs an entry
         writeToFile(id, data);
@@ -104,13 +110,18 @@ public class DataManager {
      * @param id UUID of the player
      */
     private static void updatePlayerAndFile(UUID id) {
-        File file = new File("files." + id.toString() + ".txt");
-        if (file != null) {//Checks if the file exists
-            addPlayerAndFile(id, points.get(id));//If not, adds a file for the player. Should the player already have an entry in the map, uses that. Adds a new entry if the player hasn't got one
-            return;//File is updated for the player, method is complete
-        }
-        try (ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(file))) {//Opens stream
-            o.writeObject(points.get(id).serialize());//Overwrites the file
+        File file = new File(dataFolder, id.toString());
+//        if (file != null) {//Checks if the file exists
+//            addPlayerAndFile(id, points.get(id));//If not, adds a file for the player. Should the player already have an entry in the map, uses that. Adds a new entry if the player hasn't got one
+//            return;//File is updated for the player, method is complete
+//        }
+        try (ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(new File(dataFolder, id.toString()), false))) {//Opens stream
+            PlayerWarpPointData data = points.get(id);
+            if (data == null) {
+                addPlayerAndFile(id, new PlayerWarpPointData());
+                return;
+            }
+            o.writeObject(data.serialize());//Overwrites the file
             o.close();//Closes it to prevent possible appending
         } catch (IOException ex) {
             Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -125,7 +136,7 @@ public class DataManager {
      * @param data Map containing the warp points
      */
     private static void writeToFile(UUID id, PlayerWarpPointData data) {
-        try (ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(id.toString()))) {//Makes an outputstream
+        try (ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(new File(dataFolder, id.toString()), false))) {//Makes an outputstreams
             o.writeObject(data.serialize());//Makes a file with an wrapper
         } catch (IOException ex) {
             Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -142,9 +153,7 @@ public class DataManager {
      */
     public static void addWarpPoint(UUID id, String name, Location loc) {
         PlayerWarpPointData data = points.get(id);
-        data.addWarp(
-                name,
-                loc);
+        data.addWarp(name, loc);
         updatePlayerAndFile(id);
     }
 
@@ -186,13 +195,16 @@ public class DataManager {
             throw new IllegalArgumentException("You have no warps");
         return names;
     }
-    
+
     public static Location getWarpLocation(UUID id, String name) {
         return points.get(id).getLocationByName(name);
     }
-    
+
     public static void loadData(UUID id) {
-        File file = new File(id.toString() + ".txt");
+        File[] files = dataFolder.listFiles((File dir, String name) -> {
+            return (name.startsWith(id.toString()) && FilenameUtils.getBaseName(name).endsWith(id.toString()));
+        });
+        File file = files[0];
         if (file.exists())
             try (ObjectInputStream i = new ObjectInputStream(new FileInputStream(file))) {//Maakt een InputStream aan voor het object
                 Map<String, Map<String, Object>> tempMap = (Map<String, Map<String, Object>>) i.readObject();//Leest het object
