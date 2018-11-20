@@ -44,8 +44,6 @@ public class WarpsExecutor implements CommandExecutor, Listener {
         try {
             p.sendMessage(DataManager.getWarpNames(p.getUniqueId()));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println(Arrays.toString(e.getStackTrace()));
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s%s", "&4", e.getMessage())));//Catches all the exceptions caused by a bad argument as defined by the DataManager class
             return false;
         }

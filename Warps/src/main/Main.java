@@ -6,8 +6,8 @@ import commands.RmWarpExecutor;
 import commands.SetWarpExecutor;
 import commands.WarpExecutor;
 import commands.WarpsExecutor;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -36,11 +36,12 @@ public class Main extends JavaPlugin {
         /*
         Gets the list of all players on the server.
          */
+        File file = getDataFolder();
         List<Player> players = new ArrayList<>();//Get list of all online players
 
         players.addAll(this.getServer().getOnlinePlayers());
 
-        manager = new DataManager();
+        manager = new DataManager(this);
 
         Stream<UUID> temp = players.stream().map(s -> s.getUniqueId());
         manager.fillUpFromFiles(temp == null ? new ArrayList<>() : temp.filter(s -> s != null)
