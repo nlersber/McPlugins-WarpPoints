@@ -21,6 +21,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.Main;
+import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Location;
 
 /**
@@ -112,10 +113,10 @@ public class DataManager {
      */
     public static void loadData(UUID id) {
         File[] files = dataFolder.listFiles((File dir, String name) -> {
-            return (name.startsWith(id.toString()) && name.endsWith(id.toString()));
+            return (name.startsWith(id.toString()) && FilenameUtils.getBaseName(name).endsWith(id.toString()));
         });
         File file = null;
-        if (files != null || files.length == 0)
+        if (files != null && files.length != 0)
             file = files[0];
         if (file != null)
             try (ObjectInputStream i = new ObjectInputStream(new FileInputStream(file))) {//Maakt een InputStream aan voor het object
