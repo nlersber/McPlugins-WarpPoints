@@ -5,6 +5,7 @@
  */
 package Data;
 
+import exceptions.NoWarpsException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -58,7 +59,7 @@ public class PlayerWarpPointData {
             throw new IllegalArgumentException("Please specify a warp");
         Location loc = warps.get(name);
         if (loc == null)
-            throw new IllegalArgumentException("You have no warp with that name");
+            throw new NoWarpsException("Please specify a warp name");
         return loc;
     }
 

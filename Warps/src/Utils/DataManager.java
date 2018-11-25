@@ -6,6 +6,7 @@
 package Utils;
 
 import Data.PlayerWarpPointData;
+import exceptions.NoWarpsException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -181,7 +182,7 @@ public class DataManager {
         PlayerWarpPointData data = points.get(id);
         String names = data.getWarpNames();
         if (names == null || names.trim().isEmpty())
-            throw new IllegalArgumentException("You have no warps");
+            throw new NoWarpsException("You have no warps");
         return names;
     }
 

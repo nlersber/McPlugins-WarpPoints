@@ -53,7 +53,7 @@ public class ChWarpExecutor implements CommandExecutor, Listener {
             return false;
         }
 
-        p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s '%s' %s %s", "%2Warp location", arguments[0], "was successfully renamed to", arguments[1])));//Sends a confirmation of success
+        p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s '%s' %s %s", "&2Warp location", arguments[0], "was successfully renamed to", arguments[1])));//Sends a confirmation of success
         return true;
     }
 

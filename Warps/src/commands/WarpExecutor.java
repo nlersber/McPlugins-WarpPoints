@@ -6,6 +6,7 @@
 package commands;
 
 import Utils.DataManager;
+import exceptions.NoWarpsException;
 import java.util.Arrays;
 import main.Main;
 import org.bukkit.ChatColor;
@@ -46,10 +47,8 @@ public class WarpExecutor implements CommandExecutor, Listener {
         try {
             p.teleport(DataManager.getWarpLocation(p.getUniqueId(), arguments[0]));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println(Arrays.toString(e.getStackTrace()));
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s%s", "&4", e.getMessage())));//Catches all the exceptions caused by a bad argument as defined by the DataManager class
-            return false;
+            return e instanceof NoWarpsException;
         }
 
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s %s", "&2You have arrived at", arguments[0])));//Sends a confirmation of success

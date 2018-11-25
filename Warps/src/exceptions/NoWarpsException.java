@@ -3,17 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Utils;
-
-import org.bukkit.ChatColor;
+package exceptions;
 
 /**
  *
  * @author Nick
  */
-public class ChatUtils {
+public class NoWarpsException extends RuntimeException {
 
-    public static String chat(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
+    public NoWarpsException() {
     }
+
+    public NoWarpsException(String message) {
+        super(message);
+    }
+
 }
