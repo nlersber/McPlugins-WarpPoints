@@ -5,10 +5,8 @@
  */
 package Data;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import org.bukkit.Location;
 
@@ -17,10 +15,10 @@ import org.bukkit.Location;
  *
  * @author Nick
  */
-public class PlayerWarpPointData implements Serializable {
+public class PlayerWarpPointData {
 
     private Map<String, Location> warps = new HashMap<>();
-    private static int maxSize = 10;
+    private static int maxSize = 5;
 
     public PlayerWarpPointData() {
     }

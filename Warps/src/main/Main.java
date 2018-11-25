@@ -32,22 +32,20 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        /*
-        Gets the list of all players on the server.
-         */
-        File dataFolder = getDataFolder();
+        File dataFolder = getDataFolder();//Checks if datafolder already exists and makes it if it doesn't
         if (!dataFolder.exists())
             dataFolder.mkdir();
 
-        List<Player> players = new ArrayList<>();//Get list of all online players
+        List<Player> players = new ArrayList<>();
 
-        players.addAll(this.getServer().getOnlinePlayers());
+        players.addAll(this.getServer().getOnlinePlayers());//Get list of all online players
 
-        manager = new DataManager(this);
+        manager = new DataManager(this);//Initiates the DataManager
 
         Stream<UUID> temp = players.stream().map(s -> s.getUniqueId());
+
         manager.fillUpFromFiles(temp == null ? new ArrayList<>() : temp.filter(s -> s != null)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()));//Fills up the Data if the playerList isn't empty to avoid nullpointers
 
         new JoinListener(this);
 

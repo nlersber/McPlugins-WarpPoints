@@ -9,9 +9,6 @@ import Data.PlayerWarpPointData;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -24,7 +21,6 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.Main;
-import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Location;
 
 /**
@@ -78,28 +74,9 @@ public class DataManager {
         Set<UUID> keys = points.keySet();//Stores the keyset of points
         players.forEach(s -> {//Iterates over the players and checks if they have a data wrapper already
             if (!keys.contains(s))
-                createFileAndDataWrapper(s);//Gives them a data wrapper and file if they don't
+                updatePlayerAndFile(s);
         });
 
-    }
-
-    /**
-     * Creates a file and a entry in this.points for the given UUID
-     *
-     * @param id UUID of a player without file and PlayerWarpPointData
-     */
-    private void createFileAndDataWrapper(UUID id) {
-        points.putIfAbsent(id, new PlayerWarpPointData());//IfAbsent is redundant, extra check
-        try (ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(new File(dataFolder, id.toString()), false))) {//Makes an outputstream, places it in the datafolder in a file named after the UUID of the player. False added to avoid appending and instead overwriting the file should there be one after all
-            o.writeObject(new PlayerWarpPointData().serialize());//Makes a file with an empty wrapper, just to have a file available
-        } catch (IOException ex) {
-            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public static void addPlayerAndFile(UUID id, PlayerWarpPointData data) {
-        points.putIfAbsent(id, new PlayerWarpPointData());//putIfAbsent to allow the method to be used when a player hasn't gotten a file yet but needs an entry
-        writeToFile(id, data);
     }
 
     /**
@@ -118,8 +95,8 @@ public class DataManager {
         try (ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(new File(dataFolder, id.toString()), false))) {//Opens stream
             PlayerWarpPointData data = points.get(id);
             if (data == null) {
-                addPlayerAndFile(id, new PlayerWarpPointData());
-                return;
+                points.putIfAbsent(id, new PlayerWarpPointData());//putIfAbsent to allow the method to be used when a player hasn't gotten a file yet but needs an entry
+                data = new PlayerWarpPointData();
             }
             o.writeObject(data.serialize());//Overwrites the file
             o.close();//Closes it to prevent possible appending
@@ -129,18 +106,29 @@ public class DataManager {
     }
 
     /**
-     * Writes the PlayerWarpPointData object to a file. Uses the toString() of
-     * the UUID as name.
+     * Loads the data from a player
      *
-     * @param id UUID of the player
-     * @param data Map containing the warp points
+     * @param id
      */
-    private static void writeToFile(UUID id, PlayerWarpPointData data) {
-        try (ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream(new File(dataFolder, id.toString()), false))) {//Makes an outputstreams
-            o.writeObject(data.serialize());//Makes a file with an wrapper
-        } catch (IOException ex) {
-            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public static void loadData(UUID id) {
+        File[] files = dataFolder.listFiles((File dir, String name) -> {
+            return (name.startsWith(id.toString()) && name.endsWith(id.toString()));
+        });
+        File file = null;
+        if (files != null || files.length == 0)
+            file = files[0];
+        if (file != null)
+            try (ObjectInputStream i = new ObjectInputStream(new FileInputStream(file))) {//Maakt een InputStream aan voor het object
+                Map<String, Map<String, Object>> tempMap = (Map<String, Map<String, Object>>) i.readObject();//Leest het object
+                PlayerWarpPointData data = null;
+                if (tempMap != null)
+                    data = new PlayerWarpPointData(tempMap);
+                if (data != null)//Indien het object kon gemaakt worden
+                    points.put(id, data);
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        points.putIfAbsent(id, new PlayerWarpPointData());
     }
 
     /**
@@ -196,28 +184,15 @@ public class DataManager {
         return names;
     }
 
+    /**
+     * Returns the Location of a certain warp
+     *
+     * @param id UUID of the player
+     * @param name Name of the warp
+     * @return Location object of the warp
+     */
     public static Location getWarpLocation(UUID id, String name) {
         return points.get(id).getLocationByName(name);
     }
 
-    public static void loadData(UUID id) {
-        File[] files = dataFolder.listFiles((File dir, String name) -> {
-            return (name.startsWith(id.toString()) && FilenameUtils.getBaseName(name).endsWith(id.toString()));
-        });
-        File file = null;
-        if (files != null || files.length == 0)
-            file = files[0];
-        if (file != null)
-            try (ObjectInputStream i = new ObjectInputStream(new FileInputStream(file))) {//Maakt een InputStream aan voor het object
-                Map<String, Map<String, Object>> tempMap = (Map<String, Map<String, Object>>) i.readObject();//Leest het object
-                PlayerWarpPointData data = null;
-                if (tempMap != null)
-                    data = new PlayerWarpPointData(tempMap);
-                if (data != null)//Indien het object kon gemaakt worden
-                    points.put(id, data);
-            } catch (IOException | ClassNotFoundException ex) {
-                Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        points.putIfAbsent(id, new PlayerWarpPointData());
-    }
 }
