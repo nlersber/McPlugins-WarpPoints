@@ -7,10 +7,8 @@ package commands;
 
 import Utils.DataManager;
 import exceptions.NoWarpsException;
-import java.util.Arrays;
 import main.Main;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
