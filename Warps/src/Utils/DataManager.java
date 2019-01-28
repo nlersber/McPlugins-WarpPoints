@@ -54,6 +54,8 @@ public class DataManager {
 
         if (files != null)//To prevent a NullPointer
             Arrays.stream(files).forEach(s -> {
+                if (s.isDirectory())
+                    return;
                 UUID temp = UUID.fromString(s.getName());//Contains the player's UUID, removes the extension
                 if (players.contains(temp)) {//Checks if the UUID corresponds with a player
                     try (ObjectInputStream i = new ObjectInputStream(new FileInputStream(s))) {

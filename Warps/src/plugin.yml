@@ -1,6 +1,6 @@
 name: WarpPoints
 author: Nick Lersberghe - Lazoh - MyNameIsLego
-version: 1.0
+version: 2.0
 main: main.Main
 description: Plugin that allows a player to save a couple of warp points to teleport to at will
 commands:
@@ -42,7 +42,7 @@ commands:
         description: Shows the max amount of warps
         
 permissions:
-    - warps.configwarps:
+    warps.configwarps:
         description: being able to configurate if and where warps can be used.
         default: op
         
