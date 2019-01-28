@@ -35,7 +35,13 @@ public class SetWarpExecutor implements CommandExecutor, Listener {
             cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Only players can use this command"));
             return false;
         }
+
         Player p = (Player) cs;
+
+        if (!plugin.getConfig().getStringList("worlds").contains(p.getWorld().getUID().toString())) {
+            p.sendMessage(ChatColor.RED + "Warps are not allowed here!");
+            return true;
+        }
         if (arguments.length == 0) {//If no arguments were given and thus no name for the warp was given
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Please specify a name for the warp"));
             return false;
@@ -48,10 +54,7 @@ public class SetWarpExecutor implements CommandExecutor, Listener {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4You're not standing on solid ground!"));
             return false;
         }
-        if (!plugin.getConfig().getStringList("worlds").contains(p.getWorld().getUID().toString())) {
-            p.sendMessage(ChatColor.RED + "Warps are not allowed here!");
-            return true;
-        }
+
         Location loc = p.getLocation();
 
         try {
