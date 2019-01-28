@@ -1,7 +1,9 @@
 package main;
 
 import Utils.DataManager;
+import commands.ActivateWarpExecutor;
 import commands.ChWarpExecutor;
+import commands.RemoveWarpWorldExecutor;
 import commands.RmWarpExecutor;
 import commands.SetWarpExecutor;
 import commands.WarpExecutor;
@@ -30,7 +32,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin {
     
     private DataManager manager;
-    private HashMap<UUID, PermissionAttachment> permissions;
     
     @Override
     public void onEnable() {
@@ -59,14 +60,16 @@ public class Main extends JavaPlugin {
         this.getCommand("chwarp").setExecutor(new ChWarpExecutor(this));
         this.getCommand("warps").setExecutor(new WarpsExecutor(this));
         this.getCommand("warp").setExecutor(new WarpExecutor(this));
-        
+        this.getCommand("activatewarpworld").setExecutor(new ActivateWarpExecutor(this));
+        this.getCommand("removewarpworld").setExecutor(new RemoveWarpWorldExecutor(this));
+        this.getCommand("activatewarps").setExecutor(new ActivateWarpExecutor(this));
     }
     
     public void loadConfig() {
         getConfig().options().copyDefaults(true);
         saveConfig();
     }
-    
+
 //    public void setupPermissions(Player player) {
 //        PermissionAttachment attachment = player.addAttachment(this);
 //        this.permissions.put(player.getUniqueId(), attachment);

@@ -7,15 +7,19 @@ commands:
     setwarp:
         usage: /<command> [warp name]
         description: Sets a warp point
-    rmwarp:
+        
+    removewarp:
         usage: /<command> [warp name]
         description: Removes a warp point
-    chwarp:
+        aliases: [rmwarp, remwarp, rwarp, rmvwarp]
+    changewarp:
         usage: /<command> [current warp name] [new warp name]
         description: Changes the name of a set warp
-    warps:
+        aliases: [chwarp, changewarpname, cwarp]
+    warplist:
         usage: /<command>
         description: Gives a list of all the warps you have set
+        aliases: [warps, listwarp, getwarps]
     warp:
         usage: /<command> [warp name]
         description: Teleports you to the specified warp
