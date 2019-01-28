@@ -20,5 +20,9 @@ commands:
         usage: /<command> [warp name]
         description: Teleports you to the specified warp
         
+permissions:
+    - warps.configwarps:
+        description: being able to configurate if and where warps can be used.
+        default: op
     
 

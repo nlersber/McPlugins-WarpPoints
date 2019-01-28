@@ -8,12 +8,14 @@ import commands.WarpExecutor;
 import commands.WarpsExecutor;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import listeners.JoinListener;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /*
@@ -26,36 +28,56 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author Nick
  */
 public class Main extends JavaPlugin {
-
+    
     private DataManager manager;
-
+    private HashMap<UUID, PermissionAttachment> permissions;
+    
     @Override
     public void onEnable() {
-
+        
         File dataFolder = getDataFolder();//Checks if datafolder already exists and makes it if it doesn't
         if (!dataFolder.exists())
             dataFolder.mkdir();
-
+        
+        loadConfig();
+        
         List<Player> players = new ArrayList<>();
-
+        
         players.addAll(this.getServer().getOnlinePlayers());//Get list of all online players
 
         manager = new DataManager(this);//Initiates the DataManager
 
         Stream<UUID> temp = players.stream().map(s -> s.getUniqueId());
-
+        
         manager.fillUpFromFiles(temp == null ? new ArrayList<>() : temp.filter(s -> s != null)
                 .collect(Collectors.toList()));//Fills up the Data if the playerList isn't empty to avoid nullpointers
 
         new JoinListener(this);
-
+        
         this.getCommand("setwarp").setExecutor(new SetWarpExecutor(this));
         this.getCommand("rmwarp").setExecutor(new RmWarpExecutor(this));
         this.getCommand("chwarp").setExecutor(new ChWarpExecutor(this));
         this.getCommand("warps").setExecutor(new WarpsExecutor(this));
         this.getCommand("warp").setExecutor(new WarpExecutor(this));
-
+        
     }
-
-    //TODO: test 
+    
+    public void loadConfig() {
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+    }
+    
+//    public void setupPermissions(Player player) {
+//        PermissionAttachment attachment = player.addAttachment(this);
+//        this.permissions.put(player.getUniqueId(), attachment);
+//        permissionSetter(player.getUniqueId());
+//    }
+//    
+//    private void permissionSetter(UUID id) {
+//        PermissionAttachment attachment = this.permissions.get(id);
+//        
+//        this.getConfig().getConfigurationSection("groups").getKeys(false).forEach(s -> {
+//            this.getConfig().getStringList("groups." + s + ".permissions").forEach(t -> attachment.setPermission(t, true));
+//        });
+//    }
 }

@@ -5,6 +5,7 @@
  */
 package Data;
 
+import exceptions.ConfigException;
 import exceptions.NoWarpsException;
 import java.util.HashMap;
 import java.util.Map;
@@ -160,6 +161,21 @@ public class PlayerWarpPointData {
         warps.put(replace, warps.remove(name));//Removes the old entry and uses the value to save it under the new name
 
         return warps.containsKey(replace);
+    }
+
+    /**
+     * Sets the max amount of warps available. Can be used to enlarge the list
+     * without problem. When used to decrease size, players won't be able to add
+     * any new warps.
+     *
+     * @param max Int value with the new max amount of warps.
+     */
+    public static void setMaxWarps(int max) {
+        if (maxSize == max)
+            throw new IllegalArgumentException("New size can't be equal to the old size!");
+        if (max < 1)
+            throw new IllegalArgumentException("Max size can't be lower than 1. To disable warps, use the correct command");
+        maxSize = max;
     }
 
 }

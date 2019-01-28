@@ -48,7 +48,10 @@ public class SetWarpExecutor implements CommandExecutor, Listener {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4You're not standing on solid ground!"));
             return false;
         }
-
+        if (!plugin.getConfig().getStringList("worlds").contains(p.getWorld().getUID().toString())) {
+            p.sendMessage(ChatColor.RED + "Warps are not allowed here!");
+            return true;
+        }
         Location loc = p.getLocation();
 
         try {
