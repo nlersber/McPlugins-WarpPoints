@@ -6,8 +6,7 @@ description: Plugin that allows a player to save a couple of warp points to tele
 commands:
     setwarp:
         usage: /<command> [warp name]
-        description: Sets a warp point
-        
+        description: Sets a warp point  
     removewarp:
         usage: /<command> [warp name]
         description: Removes a warp point
