@@ -59,7 +59,7 @@ public class WarpExecutor implements CommandExecutor, Listener {
             return e instanceof NoWarpsException;
         }
 
-        p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s %s", "&2You have arrived at", arguments[0])));//Sends a confirmation of success
+        p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s [%s]", "&2You have arrived at ", arguments[0])));//Sends a confirmation of success
         return true;
     }
 

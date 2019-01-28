@@ -1,4 +1,5 @@
 AddWarpWorld: command
 RemoveWarpWorld: command
 ActivateWarp: command
+WarpStatus: command
 
