@@ -1,1 +1,3 @@
 AddWarpWorld: command
+RemoveWarpWorld: command
+
