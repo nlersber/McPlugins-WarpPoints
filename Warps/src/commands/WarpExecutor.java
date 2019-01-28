@@ -30,16 +30,21 @@ public class WarpExecutor implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] arguments) {
-        if (!plugin.getConfig().getBoolean("isOn")) {
-            cs.sendMessage(ChatColor.RED + "Warps are currently disabled!");
-            return true;
-        }
+
         if (!(cs instanceof Player)) {//If the command sender isn't a player
             cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Only players can use this command"));
             return false;
         }
         Player p = (Player) cs;
 
+        if (!plugin.getConfig().getStringList("worlds").contains(p.getWorld().getUID().toString())) {
+            p.sendMessage(ChatColor.RED + "Warps are not allowed here!");
+            return true;
+        }
+        if (!plugin.getConfig().getBoolean("isOn")) {
+            p.sendMessage(ChatColor.RED + "Warps are currently disabled!");
+            return true;
+        }
         if (arguments.length < 1) {//If no arguments were given
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Please specify a warp"));
             return false;
@@ -48,10 +53,7 @@ public class WarpExecutor implements CommandExecutor, Listener {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4You only need 1 argument for this command. I only need a name, darling"));
             return false;
         }
-        if (!plugin.getConfig().getStringList("worlds").contains(p.getWorld().getUID().toString())) {
-            p.sendMessage(ChatColor.RED + "Warps are not allowed here!");
-            return true;
-        }
+
         try {
             p.teleport(DataManager.getWarpLocation(p.getUniqueId(), arguments[0]));
         } catch (Exception e) {

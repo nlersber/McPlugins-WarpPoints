@@ -73,7 +73,7 @@ public class PlayerWarpPointData {
      * @param loc The location itself
      */
     public void addWarp(String name, Location loc) {
-        if (warps.size() == maxSize)
+        if (warps.size() >= maxSize)
             throw new IllegalArgumentException("You have no more free warps available");
         if (name == null || name.trim().isEmpty())
             throw new IllegalArgumentException("Please specify a warp name");

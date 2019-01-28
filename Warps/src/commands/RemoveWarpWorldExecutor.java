@@ -39,15 +39,14 @@ public class RemoveWarpWorldExecutor implements CommandExecutor {
             return false;
         }
 
-        World givenWorld = plugin.getServer().getWorld(args[0]);
-
-        if (givenWorld == null) {
-            cs.sendMessage(ChatColor.RED + "That world doesn't exist. Did you spell it correctly?");
-            return true;
-        }
+        if (args.length != 0)
+            if (plugin.getServer().getWorld(args[0]) == null) {
+                cs.sendMessage(ChatColor.RED + "That world doesn't exist. Did you spell it correctly?");
+                return true;
+            }
         String world = (args.length == 0)
                 ? p.getWorld().getUID().toString()//If no world is given, use the current world
-                : givenWorld.getUID().toString();//Try to find 
+                : plugin.getServer().getWorld(args[0]).getUID().toString();//Try to find 
 
         List<String> list = plugin.getConfig().getStringList("worlds");
 
@@ -62,3 +61,6 @@ public class RemoveWarpWorldExecutor implements CommandExecutor {
         return true;
     }
 }
+
+//TODO
+//Compile and test

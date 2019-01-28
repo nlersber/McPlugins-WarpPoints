@@ -3,6 +3,7 @@ package main;
 import Data.PlayerWarpPointData;
 import Utils.DataManager;
 import commands.ActivateWarpExecutor;
+import commands.AddWarpWorldExecutor;
 import commands.ChWarpExecutor;
 import commands.GetWarpSizeExecutor;
 import commands.RemoveWarpWorldExecutor;
@@ -79,7 +80,7 @@ public class Main extends JavaPlugin {
         this.getCommand("warp").setExecutor(new WarpExecutor(this));
         this.getCommand("warp").setTabCompleter(new WarpTabCompleter(this));
 
-        this.getCommand("activatewarpworld").setExecutor(new ActivateWarpExecutor(this));
+        this.getCommand("activatewarpworld").setExecutor(new AddWarpWorldExecutor(this));
 
         this.getCommand("removewarpworld").setExecutor(new RemoveWarpWorldExecutor(this));
 

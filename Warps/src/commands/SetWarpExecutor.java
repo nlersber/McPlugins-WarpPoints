@@ -61,7 +61,7 @@ public class SetWarpExecutor implements CommandExecutor, Listener {
             DataManager.addWarpPoint(p.getUniqueId(), arguments[0], loc);
         } catch (Exception e) {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s%s", "&4", e.getMessage())));//Catches all the exceptions caused by a bad argument as defined by the DataManager class
-            return false;
+            return true;
         }
 
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s '%s' %s", "&2Warp location", arguments[0], "was successfully created")));//Sends a confirmation of success
