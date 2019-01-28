@@ -32,11 +32,16 @@ public class ActivateWarpExecutor implements CommandExecutor {
             p.sendMessage(ChatColor.RED + "That's too many arguments!");
             return false;
         }
-        
+
         if (!p.hasPermission("warps.configwarps")) {
             cs.sendMessage(ChatColor.RED + "You don't have permission to do that!");
             return true;
         }
+
+        boolean isOn = !plugin.getConfig().getBoolean("isOn");
+        plugin.getServer().broadcastMessage(ChatColor.GOLD + "Warps are now " + (isOn ? "enabled" : "disabled"));
+        plugin.getConfig().set("isOn", isOn);
+
         return true;
     }
 
