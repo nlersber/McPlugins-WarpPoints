@@ -22,10 +22,29 @@ commands:
     warp:
         usage: /<command> [warp name]
         description: Teleports you to the specified warp
+    activatewarpworld:
+        usage: /<command> [optional world name]
+        description: Adds the current or specified world to the list of worlds where warps are enabled
+    removewarpworld:
+        usage: /<command> [optional world name]
+        description: Removes the current or specified world from the list of worlds where warps are enabled
+    activatewarps:
+        usage: /<command>
+        description: Activates or deactivates warps on the server
+    warpstatus:
+        usage: /<command>
+        description: Shows the status of warps on this server (enabled/disabled)
+    setwarpsize:
+        usage: /<command> [new max size]
+        description: Changes the max amount of warps to the specified amount
+    warpsize: 
+        usage: /<command>
+        description: Shows the max amount of warps
         
 permissions:
     - warps.configwarps:
         description: being able to configurate if and where warps can be used.
         default: op
-    
+        
+        
 

@@ -144,7 +144,7 @@ public class PlayerWarpPointData {
      * @param replace New name of the warp
      * @return Boolean if they change was successful
      */
-    public boolean changeName(String name, String replace) {
+    public boolean changeName(String name, String replace) throws IllegalArgumentException {
         if (warps.isEmpty())
             throw new IllegalArgumentException("You have no warps");
         if (name == null || name.trim().isEmpty())
@@ -170,7 +170,7 @@ public class PlayerWarpPointData {
      *
      * @param max Int value with the new max amount of warps.
      */
-    public static void setMaxWarps(int max) {
+    public static void setMaxWarps(int max) throws IllegalArgumentException {
         if (maxSize == max)
             throw new IllegalArgumentException("New size can't be equal to the old size!");
         if (max < 1)

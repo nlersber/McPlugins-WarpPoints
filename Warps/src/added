@@ -1,5 +1,3 @@
-AddWarpWorld: command
-RemoveWarpWorld: command
-ActivateWarp: command
 WarpStatus: command
-
+SetWarpSize: command
+GetWarpSize: command

@@ -75,14 +75,6 @@ public class PlayerWarpPointDataIT {
     }
 
     /**
-     * Test of getMaxSize method, of class PlayerWarpPointData.
-     */
-    @Test
-    public void testGetMaxSize() {
-        assertEquals(10, PlayerWarpPointData.getMaxSize());
-    }
-
-    /**
      * Test of getSize method, of class PlayerWarpPointData.
      */
     @Test
