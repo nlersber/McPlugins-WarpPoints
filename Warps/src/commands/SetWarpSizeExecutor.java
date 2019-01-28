@@ -43,6 +43,7 @@ public class SetWarpSizeExecutor implements CommandExecutor {
         try {
             int max = Integer.parseInt(args[0]);
             PlayerWarpPointData.setMaxWarps(max);
+            plugin.getConfig().set("max_size", max);
             plugin.getServer().broadcastMessage(ChatColor.GOLD + "Warp size is now set to " + max);
         } catch (IllegalArgumentException e) {
             p.sendMessage(ChatColor.RED + e.getMessage());

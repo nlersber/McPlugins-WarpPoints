@@ -20,7 +20,7 @@ import org.bukkit.Location;
 public class PlayerWarpPointData {
 
     private Map<String, Location> warps = new HashMap<>();
-    private static int maxSize = 5;
+    private static int maxSize;
 
     public PlayerWarpPointData() {
     }
