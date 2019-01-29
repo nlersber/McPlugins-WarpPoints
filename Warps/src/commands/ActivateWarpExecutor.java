@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- *
+ *  Used to enable/disable warps globally
  * @author Nick
  */
 public class ActivateWarpExecutor implements CommandExecutor {
@@ -33,14 +33,14 @@ public class ActivateWarpExecutor implements CommandExecutor {
             return false;
         }
 
-        if (!p.hasPermission("warps.configwarps")) {
+        if (!p.hasPermission("warps.configwarps")) {//Check if player has permissions. Permissions are found in plugin.yml. Default set to OP only
             cs.sendMessage(ChatColor.RED + "You don't have permission to do that!");
             return true;
         }
 
-        boolean isOn = !plugin.getConfig().getBoolean("isOn");
-        plugin.getServer().broadcastMessage(ChatColor.GOLD + "Warps are now " + (isOn ? "enabled" : "disabled"));
-        plugin.getConfig().set("isOn", isOn);
+        boolean isOn = !plugin.getConfig().getBoolean("isOn");//Gets boolean from config file and flips it
+        plugin.getServer().broadcastMessage(ChatColor.GOLD + "Warps are now " + (isOn ? "enabled" : "disabled"));//Global status announcement
+        plugin.getConfig().set("isOn", isOn);//Store flipped value
 
         return true;
     }

@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 /**
+ * Used to get a list of all the warps a player has.
  *
  * @author Nick
  */
@@ -41,10 +42,10 @@ public class WarpsExecutor implements CommandExecutor, Listener {
         }
 
         try {
-            p.sendMessage(DataManager.getWarpNames(p.getUniqueId()));
+            p.sendMessage(DataManager.getWarpNames(p.getUniqueId()));//Retrieves a String containing all the names
         } catch (Exception e) {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s%s", "&4", e.getMessage())));//Catches all the exceptions caused by a bad argument as defined by the DataManager class
-            return e instanceof NoWarpsException;
+            return e instanceof NoWarpsException;//If the error was self-thrown, return true to not show the correct usage of the command
         }
 
         return true;

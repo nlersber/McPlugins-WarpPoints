@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
+ * Used to change the max amount of warps
  *
  * @author Nick
  */
@@ -41,10 +42,14 @@ public class SetWarpSizeExecutor implements CommandExecutor {
             return false;
         }
         try {
-            int max = Integer.parseInt(args[0]);
-            PlayerWarpPointData.setMaxWarps(max);
-            plugin.getConfig().set("max_size", max);
-            plugin.getServer().broadcastMessage(ChatColor.GOLD + "Warp size is now set to " + max);
+            int max = Integer.parseInt(args[0]);//Get the argument and parse to int. Can throw InputMismatch
+
+            PlayerWarpPointData.setMaxWarps(max);//Set the max amount. Can throw IllegalArgumentExceptions
+
+            plugin.getConfig().set("max_size", max);//Save to config file. Is needed so the amount stays even after a restart. Gets set from config at plugin enable
+
+            plugin.getServer().broadcastMessage(ChatColor.GOLD + "Warp size is now set to " + max);//Global broadcast
+
         } catch (IllegalArgumentException e) {
             p.sendMessage(ChatColor.RED + e.getMessage());
         } catch (InputMismatchException e) {

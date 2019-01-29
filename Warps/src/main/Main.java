@@ -16,23 +16,18 @@ import commands.WarpstatusExecutor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import listeners.JoinListener;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.java.JavaPlugin;
 import tabCompleters.WarpTabCompleter;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
+ * Main class of the plugin. 'onEnable' gets called when the plugin is activated
+ * (usually at server startup).
  *
  * @author Nick
  */
@@ -47,23 +42,25 @@ public class Main extends JavaPlugin {
         if (!dataFolder.exists())
             dataFolder.mkdir();
 
-        loadConfig();
+        loadConfig();//Loads the config file
 
         PlayerWarpPointData.setMaxWarps(getConfig().getInt("max_size"));//Sets the amount of warps based on the config file
 
-        List<Player> players = new ArrayList<>();
-
-        players.addAll(this.getServer().getOnlinePlayers());//Get list of all online players
+        List<Player> players = new ArrayList<>(this.getServer().getOnlinePlayers());
 
         manager = new DataManager(this);//Initiates the DataManager
 
-        Stream<UUID> temp = players.stream().map(s -> s.getUniqueId());
+        Stream<UUID> temp = players.stream().map(s -> s.getUniqueId());//Gets a stream of the UUID of all the online players
 
         manager.fillUpFromFiles(temp == null ? new ArrayList<>() : temp.filter(s -> s != null)
                 .collect(Collectors.toList()));//Fills up the Data if the playerList isn't empty to avoid nullpointers
 
-        new JoinListener(this);
+        new JoinListener(this);//Makes an instance of the JoinListener. This also registers the Listener (see JoinListener).
 
+        //Start of the command registration
+        //First the aliases of the commands are set
+        //Then the Executor attached to the command is set. This executor contains all the code executed whenever the command is called
+        //Finally a TabCompleter might be set. This causes autocomplete to give a certain set of things to chose from 
         this.getCommand("setwarp").setExecutor(new SetWarpExecutor(this));
 
         this.getCommand("removewarp").setAliases(Arrays.asList("rmwarp", "remwarp", "rwarp", "rmvwarp"));
@@ -95,21 +92,8 @@ public class Main extends JavaPlugin {
     }
 
     public void loadConfig() {
-        getConfig().options().copyDefaults(true);
+        getConfig().options().copyDefaults(true);//Sets so the config should copy from the default
         saveConfig();
     }
 
-//    public void setupPermissions(Player player) {
-//        PermissionAttachment attachment = player.addAttachment(this);
-//        this.permissions.put(player.getUniqueId(), attachment);
-//        permissionSetter(player.getUniqueId());
-//    }
-//    
-//    private void permissionSetter(UUID id) {
-//        PermissionAttachment attachment = this.permissions.get(id);
-//        
-//        this.getConfig().getConfigurationSection("groups").getKeys(false).forEach(s -> {
-//            this.getConfig().getStringList("groups." + s + ".permissions").forEach(t -> attachment.setPermission(t, true));
-//        });
-//    }
 }

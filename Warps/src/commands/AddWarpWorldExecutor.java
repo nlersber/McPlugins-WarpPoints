@@ -1,6 +1,7 @@
 package commands;
 
 import java.util.List;
+import java.util.UUID;
 import main.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -10,6 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
+ * Used to add a world to the list of approved worlds. Can be used to refer to
+ * the current world or a specified one.
  *
  * @author Nick
  */
@@ -63,6 +66,7 @@ public class AddWarpWorldExecutor implements CommandExecutor {
 
         plugin.getConfig().set("worlds", list);
         plugin.saveConfig();
+        p.sendMessage(ChatColor.GOLD + "Added '" + this.plugin.getServer().getWorld(UUID.fromString(world)).getName() + "' to the list!");
         return true;
     }
 

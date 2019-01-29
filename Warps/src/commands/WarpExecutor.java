@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 /**
+ * Used to execute a warp and teleport the player
  *
  * @author Nick
  */
@@ -37,11 +38,11 @@ public class WarpExecutor implements CommandExecutor, Listener {
         }
         Player p = (Player) cs;
 
-        if (!plugin.getConfig().getStringList("worlds").contains(p.getWorld().getUID().toString())) {
+        if (!plugin.getConfig().getStringList("worlds").contains(p.getWorld().getUID().toString())) {//Checks if the current world is in the list of approved worlds
             p.sendMessage(ChatColor.RED + "Warps are not allowed here!");
             return true;
         }
-        if (!plugin.getConfig().getBoolean("isOn")) {
+        if (!plugin.getConfig().getBoolean("isOn")) {//Checks if warps are globally enabled
             p.sendMessage(ChatColor.RED + "Warps are currently disabled!");
             return true;
         }
@@ -55,7 +56,7 @@ public class WarpExecutor implements CommandExecutor, Listener {
         }
 
         try {
-            p.teleport(DataManager.getWarpLocation(p.getUniqueId(), arguments[0]));
+            p.teleport(DataManager.getWarpLocation(p.getUniqueId(), arguments[0]));//Delegation
         } catch (Exception e) {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s%s", "&4", e.getMessage())));//Catches all the exceptions caused by a bad argument as defined by the DataManager class
             return e instanceof NoWarpsException;

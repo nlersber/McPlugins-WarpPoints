@@ -35,10 +35,20 @@ public class PlayerWarpPointData {
         this.warps = serialized;
     }
 
+    /**
+     * Used to make an object after deserialization
+     *
+     * @param serialized Map containing the data
+     */
     public PlayerWarpPointData(Map<String, Map<String, Object>> serialized) {
         serialized.forEach((key, val) -> warps.put(key, Location.deserialize(val)));
     }
 
+    /**
+     * Used to serialize the data
+     *
+     * @return
+     */
     public Map<String, Map<String, Object>> serialize() {
         Map<String, Map<String, Object>> temp = new HashMap<>();
         warps.forEach((key, val) -> temp.put(key, val.serialize()));

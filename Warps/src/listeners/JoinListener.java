@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
+ * Whenever a player joins, loads in their WarpPoint data.
  *
  * @author Nick
  */

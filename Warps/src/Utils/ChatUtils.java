@@ -14,6 +14,6 @@ import org.bukkit.ChatColor;
 public class ChatUtils {
 
     public static String chat(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
+        return ChatColor.translateAlternateColorCodes('&', message);//Adds a color to the chat text. Deprecated in this project, use 'ChatColor.ENUMVALUE + "String" instead for cleaner code
     }
 }

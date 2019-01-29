@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 /**
+ * Used to change the name of a warp
  *
  * @author Nick
  */
@@ -47,13 +48,11 @@ public class ChWarpExecutor implements CommandExecutor, Listener {
         try {
             DataManager.changeName(p.getUniqueId(), arguments[0], arguments[1]);//Changes the name of the chosen warp. Checks if both names are valid and if the current name corresponds with a location
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println(Arrays.toString(e.getStackTrace()));
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s%s", "&4", e.getMessage())));//Catches all the exceptions caused by a bad argument as defined by the DataManager class
             return false;
         }
 
-        p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s '%s' %s %s", "&2Warp location", arguments[0], "was successfully renamed to", arguments[1])));//Sends a confirmation of success
+        p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s '%s' %s '%s'", "&2Warp location", arguments[0], "was successfully renamed to", arguments[1])));//Sends a confirmation of success
         return true;
     }
 

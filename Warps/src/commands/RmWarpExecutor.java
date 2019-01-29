@@ -17,11 +17,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 /**
+ * Used to remove a warp
  *
  * @author Nick
  */
 public class RmWarpExecutor implements CommandExecutor, Listener {
+
     private Main plugin;
+
     public RmWarpExecutor(Main aThis) {
         plugin = aThis;
     }

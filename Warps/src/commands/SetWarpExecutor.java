@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 /**
+ * Used to set a warp
  *
  * @author Nick
  */
@@ -38,7 +39,7 @@ public class SetWarpExecutor implements CommandExecutor, Listener {
 
         Player p = (Player) cs;
 
-        if (!plugin.getConfig().getStringList("worlds").contains(p.getWorld().getUID().toString())) {
+        if (!plugin.getConfig().getStringList("worlds").contains(p.getWorld().getUID().toString())) {//Check if current world is in the list of approved worlds
             p.sendMessage(ChatColor.RED + "Warps are not allowed here!");
             return true;
         }
@@ -58,7 +59,7 @@ public class SetWarpExecutor implements CommandExecutor, Listener {
         Location loc = p.getLocation();
 
         try {
-            DataManager.addWarpPoint(p.getUniqueId(), arguments[0], loc);
+            DataManager.addWarpPoint(p.getUniqueId(), arguments[0], loc);//Delegation
         } catch (Exception e) {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s%s", "&4", e.getMessage())));//Catches all the exceptions caused by a bad argument as defined by the DataManager class
             return true;

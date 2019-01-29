@@ -29,7 +29,7 @@ public class WarpTabCompleter implements TabCompleter {
         }
 
         Player p = (Player) cs;
-        return Arrays.asList(DataManager.getWarpNames(p.getUniqueId()).split("\n"));
+        return Arrays.asList(DataManager.getWarpNames(p.getUniqueId()).split("\n"));//Returns a list of the given player's warps
     }
 
 }
