@@ -1,6 +1,6 @@
 package commands;
 
-import Data.PlayerWarpPointData;
+import data.PlayerWarpPointData;
 import java.util.InputMismatchException;
 import java.util.List;
 import main.Main;

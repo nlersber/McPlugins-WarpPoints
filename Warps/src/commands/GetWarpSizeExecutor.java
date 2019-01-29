@@ -1,6 +1,6 @@
 package commands;
 
-import Data.PlayerWarpPointData;
+import data.PlayerWarpPointData;
 import main.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

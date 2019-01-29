@@ -1,7 +1,7 @@
 package main;
 
-import Data.PlayerWarpPointData;
-import Utils.DataManager;
+import data.PlayerWarpPointData;
+import utils.DataManager;
 import commands.ActivateWarpExecutor;
 import commands.AddWarpWorldExecutor;
 import commands.ChWarpExecutor;

@@ -1,6 +1,6 @@
 package tabCompleters;
 
-import Utils.DataManager;
+import utils.DataManager;
 import java.util.Arrays;
 import java.util.List;
 import main.Main;

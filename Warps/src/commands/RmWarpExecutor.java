@@ -5,7 +5,7 @@
  */
 package commands;
 
-import Utils.DataManager;
+import utils.DataManager;
 import java.util.Arrays;
 import main.Main;
 import org.bukkit.ChatColor;

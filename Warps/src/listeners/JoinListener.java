@@ -5,8 +5,8 @@
  */
 package listeners;
 
-import Data.PlayerWarpPointData;
-import Utils.DataManager;
+import data.PlayerWarpPointData;
+import utils.DataManager;
 import main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
