@@ -1,4 +1,7 @@
 max_size: 5
+#Default is 5
 isOn: true
+#Default is true
+#Contains the UUID's of all the approved worlds
 worlds:
     
